@@ -33,9 +33,9 @@ pipeline {
     stage('SonarQube Inspection') {
         steps {
             sh  """mvn sonar:sonar \
-                   -Dsonar.projectKey=Java-WebApp-Project \
-                   -Dsonar.host.url=http://172.31.18.176:9000 \
-                   -Dsonar.login=35dba629ede0d49498d7aa9ab8e439f513881d3f"""
+                   -Dsonar.projectKey=java-webapp-project \
+                   -Dsonar.host.url=http://172.31.23.239:9000 \
+                   -Dsonar.login=a4a4d5b621c4866994719e0728f84af07076efa2"""
         }
     } 
     stage("Upload Artifact To Nexus"){
@@ -52,7 +52,7 @@ pipeline {
   post {
     always {
         echo 'Slack Notifications.'
-        slackSend channel: '#devops', //update and provide your channel name
+        slackSend channel: '#jenkins-ci-pipeline-alert-na', //update and provide your channel name
         color: COLOR_MAP[currentBuild.currentResult],
         message: "*${currentBuild.currentResult}:* Job Name '${env.JOB_NAME}' build ${env.BUILD_NUMBER} \n Build Timestamp: ${env.BUILD_TIMESTAMP} \n Project Workspace: ${env.WORKSPACE} \n More info at: ${env.BUILD_URL}"
     }
